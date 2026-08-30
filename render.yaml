@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: tiendawisp
+    env: node
+    buildCommand: npm run render-build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false # Requires a Render PostgreSQL database connected
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: AI_MODEL
+        value: google/gemini-2.5-flash
