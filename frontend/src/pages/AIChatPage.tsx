@@ -22,7 +22,7 @@ export function AIChatPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [sessions, setSessions] = useState<string[]>([]);
   const [currentSession, setCurrentSession] = useState('default');
-  const [selectedModel, setSelectedModel] = useState(AI_MODELS[0].id);
+  const [selectedModel, setSelectedModel] = useState(AI_MODELS[0]?.id || '');
   const [input, setInput] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
   const [error, setError] = useState('');
