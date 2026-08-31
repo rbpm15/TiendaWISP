@@ -12,7 +12,7 @@
     "dev:frontend": "npm run dev -w frontend",
     "build": "npm run build -w backend && npm run build -w frontend",
     "typecheck": "npm run typecheck -w backend && npm run typecheck -w frontend",
-    "render-build": "npm install && npm run build -w frontend && npm run build -w backend && npx prisma generate --schema=prisma/schema.prisma && npx prisma db push --schema=prisma/schema.prisma",
+    "render-build": "npm install && npm run build -w frontend && npm run build -w backend && npx prisma generate --schema=prisma/schema.prisma && npx prisma db push --schema=prisma/schema.prisma --accept-data-loss",
     "start": "npm run start -w backend"
   },
   "dependencies": {
