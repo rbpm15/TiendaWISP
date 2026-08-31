@@ -6,6 +6,7 @@
     "types": ["node"],
     "ignoreDeprecations": "5.0",
     "baseUrl": ".",
+    "noEmit": false,
     "paths": {
       "@domain/*": ["src/domain/*"],
       "@application/*": ["src/application/*"],
