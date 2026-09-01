@@ -1,4 +1,4 @@
-import type { Product, DashboardStats, StockAlert, StockMovement, ApiResponse, ChatMessage } from '../types/index.js';
+import type { Product, DashboardStats, StockAlert, StockMovement, ApiResponse, ChatMessage, Customer } from '../types/index.js';
 
 const BASE = '/api';
 
@@ -149,4 +149,36 @@ export async function sendChatMessage(
   } catch (err: any) {
     onError(err.message || 'Error de conexión');
   }
+}
+
+// ── Customers ──
+export async function getCustomers(filters?: {
+  search?: string;
+  status?: string;
+}): Promise<{ data: Customer[]; total: number }> {
+  const params = new URLSearchParams();
+  if (filters?.search) params.set('search', filters.search);
+  if (filters?.status) params.set('status', filters.status);
+  const qs = params.toString();
+  return fetchJSON(`${BASE}/customers${qs ? `?${qs}` : ''}`);
+}
+
+export async function createCustomer(data: Partial<Customer> & { equipmentIds?: number[] }): Promise<ApiResponse<Customer>> {
+  return fetchJSON(`${BASE}/customers`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+}
+
+export async function updateCustomer(id: number, data: Partial<Customer> & { equipmentIds?: number[] }): Promise<ApiResponse<Customer>> {
+  return fetchJSON(`${BASE}/customers/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+}
+
+export async function deleteCustomer(id: number): Promise<{ message: string }> {
+  return fetchJSON(`${BASE}/customers/${id}`, { method: 'DELETE' });
 }

@@ -60,3 +60,21 @@ export type ApiResponse<T> = {
   message?: string;
   error?: string;
 };
+
+export interface Customer {
+  id: number;
+  name: string;
+  phone: string | null;
+  email: string | null;
+  address: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  monthlyFee: number;
+  paymentDay: number;
+  status: 'active' | 'suspended' | 'cancelled';
+  notes: string;
+  equipmentIds: string; // JSON array string
+  createdAt: string;
+  updatedAt: string;
+}
+

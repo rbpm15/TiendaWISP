@@ -63,3 +63,23 @@ model ChatMessage {
 
   @@map("chat_messages")
 }
+
+model Customer {
+  id              Int      @id @default(autoincrement())
+  name            String
+  phone           String?
+  email           String?
+  address         String?
+  latitude        Float?
+  longitude       Float?
+  monthlyFee      Float    @default(0) @map("monthly_fee")
+  paymentDay      Int      @default(1) @map("payment_day")   // day of month (1-31)
+  status          String   @default("active")                 // 'active', 'suspended', 'cancelled'
+  notes           String   @default("")
+  // Equipment used (stored as JSON array of product IDs/names)
+  equipmentIds    String   @default("[]") @map("equipment_ids")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@map("customers")
+}

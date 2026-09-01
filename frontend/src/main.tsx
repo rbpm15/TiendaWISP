@@ -5,6 +5,7 @@ import './styles/global.css';
 import './styles/dashboard.css';
 import './styles/chat.css';
 import './styles/inventory.css';
+import './styles/clients.css';
 
 const rootElement = document.getElementById('root');
 

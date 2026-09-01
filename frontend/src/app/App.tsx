@@ -2,14 +2,16 @@ import { useState } from 'react';
 import { DashboardPage } from '../pages/DashboardPage.js';
 import { AIChatPage } from '../pages/AIChatPage.js';
 import { InventoryPage } from '../pages/InventoryPage.js';
-import { LayoutDashboard, Bot, Package } from 'lucide-react';
+import { ClientsPage } from '../pages/ClientsPage.js';
+import { LayoutDashboard, Bot, Package, Users } from 'lucide-react';
 
-type Page = 'dashboard' | 'chat' | 'inventory';
+type Page = 'dashboard' | 'chat' | 'inventory' | 'clients';
 
 const NAV_ITEMS = [
   { page: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { page: 'chat', label: 'Chat IA', icon: Bot },
+  { page: 'clients',   label: 'Clientes',  icon: Users },
   { page: 'inventory', label: 'Inventario', icon: Package },
+  { page: 'chat',      label: 'Chat IA',   icon: Bot },
 ] as const;
 
 export function App() {
@@ -45,9 +47,11 @@ export function App() {
 
       <main className="main-content">
         {currentPage === 'dashboard' && <DashboardPage />}
-        {currentPage === 'chat' && <AIChatPage />}
+        {currentPage === 'clients'   && <ClientsPage />}
+        {currentPage === 'chat'      && <AIChatPage />}
         {currentPage === 'inventory' && <InventoryPage />}
       </main>
     </div>
   );
 }
+
