@@ -1,4 +1,15 @@
 import { useState, useEffect } from 'react';
+import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+
+// Fix Leaflet's default icon path issues in React
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
 import type { Customer, Product } from '../types/index.js';
 import { getCustomers, createCustomer, updateCustomer, deleteCustomer } from '../services/api.js';
 import { getProducts } from '../services/api.js';
@@ -36,6 +47,18 @@ const EMPTY_FORM: CustomerFormData = {
   monthlyFee: '', paymentDay: '1',
   status: 'active', notes: '', equipmentIds: [],
 };
+
+function LocationMarker({ lat, lng, setCoords }: { lat: string, lng: string, setCoords: (lat: string, lng: string) => void }) {
+  useMapEvents({
+    click(e) {
+      setCoords(e.latlng.lat.toFixed(6), e.latlng.lng.toFixed(6));
+    },
+  });
+
+  return lat && lng ? (
+    <Marker position={[parseFloat(lat), parseFloat(lng)]} />
+  ) : null;
+}
 
 export function ClientsPage() {
   const [customers, setCustomers]   = useState<Customer[]>([]);
@@ -330,11 +353,24 @@ export function ClientsPage() {
                 <div className="form-row">
                   <div className="form-group">
                     <label>Latitud GPS</label>
-                    <input type="number" step="any" value={form.latitude} onChange={e => setForm(f => ({...f, latitude: e.target.value}))} placeholder="15.783456" />
+                    <input type="number" step="any" value={form.latitude} onChange={e => setForm(f => ({...f, latitude: e.target.value}))} placeholder="17.2667" />
                   </div>
                   <div className="form-group">
                     <label>Longitud GPS</label>
-                    <input type="number" step="any" value={form.longitude} onChange={e => setForm(f => ({...f, longitude: e.target.value}))} placeholder="-90.231456" />
+                    <input type="number" step="any" value={form.longitude} onChange={e => setForm(f => ({...f, longitude: e.target.value}))} placeholder="-97.6833" />
+                  </div>
+                </div>
+                <div className="form-group" style={{ marginTop: '12px' }}>
+                  <label>Selecciona en el mapa (Tlaxiaco, Oaxaca)</label>
+                  <div style={{ height: '250px', borderRadius: '10px', overflow: 'hidden', border: '1px solid var(--border)' }}>
+                    <MapContainer center={[17.2667, -97.6833]} zoom={14} style={{ height: '100%', width: '100%' }}>
+                      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="&copy; OpenStreetMap" />
+                      <LocationMarker
+                        lat={form.latitude}
+                        lng={form.longitude}
+                        setCoords={(lat, lng) => setForm(f => ({ ...f, latitude: lat, longitude: lng }))}
+                      />
+                    </MapContainer>
                   </div>
                 </div>
               </fieldset>
